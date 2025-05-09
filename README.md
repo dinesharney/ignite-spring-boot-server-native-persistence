@@ -1,32 +1,30 @@
-# ignite-spring-boot-server-external-storage
+# ignite-spring-boot-server-native-persistence
 
-A sample Spring Boot application demonstrating **Apache Ignite** as a distributed **read-through / write-through cache** backed by an **external persistent store** (like a relational database). This setup provides **low-latency access** to data while maintaining consistency with the underlying data store.
+A Spring Boot application demonstrating **Apache Ignite** with **native persistence** enabled. Unlike traditional setups that depend on external databases, this project uses Ignite's built-in storage to provide a fully in-memory + durable **distributed cache and data store**.
 
 ---
 
 ## Key Features
 
-- Apache Ignite embedded in Spring Boot
-- Read-through: Auto-load from DB on cache miss
-- Write-through: Auto-persist to DB on cache update
-- Pluggable `CacheStore` implementation
+- Apache Ignite native persistence (no external DB needed)
+- Data survives restarts (durable storage)
+- Distributed in-memory + on-disk cache
+- SQL and key-value APIs supported
+- Spring Boot integration with embedded Ignite node
 - Simple REST APIs for CRUD operations
-- In-memory H2 used as demo database (replaceable with MySQL/Postgres)
 
 ---
 
 ## System Architecture
 
 - **Client API Call**
-  - Sends request to Spring Boot app
-- **Spring Boot Application (embedded Ignite node)**
-  - Hosts REST APIs
-  - Connects to Ignite Cache
-- **Apache Ignite Cache**
-  - Acts as read-through/write-through cache
-  - Delegates load/write to external data store
-- **External Persistent Store**
-  - Backed by H2 database (or any JDBC-compatible DB)
+  - Sends REST request to Spring Boot app
+- **Spring Boot Application (Ignite Node)**
+  - Hosts Ignite as embedded instance
+  - Executes cache operations and SQL queries
+- **Apache Ignite Cache with Native Persistence**
+  - Stores data in memory and persists on disk
+  - Survives node restarts and cluster crashes
 
 ---
 
@@ -34,9 +32,7 @@ A sample Spring Boot application demonstrating **Apache Ignite** as a distribute
 
 - Java 17
 - Spring Boot 3.x
-- Apache Ignite 2.15+
-- Spring Data JPA
-- H2 In-Memory Database
+- Apache Ignite 2.15+ (with persistence)
 - Maven
 
 ---
@@ -44,11 +40,9 @@ A sample Spring Boot application demonstrating **Apache Ignite** as a distribute
 ## Project Structure
 
 - `controller/` – REST APIs (`CustomerController.java`)
-- `model/` – JPA Entity (`Customer.java`)
-- `repository/` – Spring Data interface (`CustomerRepository.java`)
-- `store/` – Ignite `CacheStore` implementation (`CustomerCacheStore.java`)
-- `config/` – Ignite and cache configuration (`IgniteConfig.java`)
-- `IgniteSpringBootApp.java` – Main Spring Boot application entry point
+- `model/` – Ignite-friendly POJO (`Customer.java`)
+- `config/` – Ignite native persistence configuration (`IgniteConfig.java`)
+- `IgniteSpringBootApp.java` – Main Spring Boot entry point
 
 ---
 
@@ -57,8 +51,9 @@ A sample Spring Boot application demonstrating **Apache Ignite** as a distribute
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-org/ignite-spring-boot-server-external-storage.git
-   cd ignite-spring-boot-server-external-storage
+   git clone ttps://github.com/dinesharney/ignite-spring-boot-server-native-persistence
+   cd ignite-spring-boot-server-native-persistence
+
 
 ### 2. Build the App
 ./mvnw clean install
