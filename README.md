@@ -16,18 +16,17 @@ A sample Spring Boot application demonstrating **Apache Ignite** as a distribute
 ---
 
 ## System Architecture
-[Client API Call]
-|
-v
-[Spring Boot App - Ignite Node]
-|
-v
-[Apache Ignite Cache]
-(read-through/write-through)
-|
-v
-[External Storage (H2 DB via JPA)]
 
+- **Client API Call**
+  - Sends request to Spring Boot app
+- **Spring Boot Application (embedded Ignite node)**
+  - Hosts REST APIs
+  - Connects to Ignite Cache
+- **Apache Ignite Cache**
+  - Acts as read-through/write-through cache
+  - Delegates load/write to external data store
+- **External Persistent Store**
+  - Backed by H2 database (or any JDBC-compatible DB)
 
 ---
 
@@ -36,35 +35,35 @@ v
 - Java 17
 - Spring Boot 3.x
 - Apache Ignite 2.15+
-- Spring Data JPA + H2 Database
+- Spring Data JPA
+- H2 In-Memory Database
 - Maven
 
 ---
 
 ## Project Structure
-src/main/java/
-├── controller/ # REST APIs (CustomerController)
-├── model/ # JPA entity (Customer.java)
-├── repository/ # Spring Data JPA interface (CustomerRepository)
-├── store/ # Ignite CacheStore adapter (CustomerCacheStore.java)
-├── config/ # Ignite & cache configuration (IgniteConfig.java)
-└── IgniteSpringBootApp.java
 
+- `controller/` – REST APIs (`CustomerController.java`)
+- `model/` – JPA Entity (`Customer.java`)
+- `repository/` – Spring Data interface (`CustomerRepository.java`)
+- `store/` – Ignite `CacheStore` implementation (`CustomerCacheStore.java`)
+- `config/` – Ignite and cache configuration (`IgniteConfig.java`)
+- `IgniteSpringBootApp.java` – Main Spring Boot application entry point
 
 ---
 
 ## Getting Started
 
-### 1. Clone the Repository
+1. **Clone the Repository**
 
-```bash
-git clone https://github.com/your-org/ignite-spring-boot-server-external-storage.git
-cd ignite-spring-boot-server-external-storage
+   ```bash
+   git clone https://github.com/your-org/ignite-spring-boot-server-external-storage.git
+   cd ignite-spring-boot-server-external-storage
 
 ### 2. Build the App
 ./mvnw clean install
 
-### 2. Run it
+### 2. Run the App
 ./mvnw spring-boot:run
 
 
@@ -80,5 +79,5 @@ cd ignite-spring-boot-server-external-storage
 | **Fault Tolerance**  | Depends on the external database setup  | Built into Ignite's distributed storage |
 | **SQL Support**      | Limited (depends on external DB)        | Full SQL support                        |
 
-
+## Further Reading
 https://medium.com/@dinesharney/building-a-spring-boot-application-with-apache-ignite-for-caching-0c4c2110ffb8
